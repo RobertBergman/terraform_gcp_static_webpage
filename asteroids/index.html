@@ -182,7 +182,7 @@
                     var percent = (value / total * 100).toFixed(0);
                     progressElement.style.width = percent + '%';
                 } else {
-                    if (text === '') {
+                    if (text === '' || text === 'All downloads complete.') {
                         statusElement.style.display = 'none';
                         document.getElementById('canvas').focus();
                     } else {
@@ -196,6 +196,17 @@
             monitorRunDependencies: function(left) {
                 this.totalDependencies = Math.max(this.totalDependencies, left);
                 Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+                
+                // Ensure status is hidden after downloads complete
+                if (!left) {
+                    setTimeout(function() {
+                        var statusElement = document.getElementById('status');
+                        if (statusElement) {
+                            statusElement.style.display = 'none';
+                            document.getElementById('canvas').focus();
+                        }
+                    }, 100);
+                }
             }
         };
         
@@ -221,6 +232,6 @@
             }
         });
     </script>
-    <script async type="text/javascript" src="asteroids.js?v=2"></script>
+    <script async type="text/javascript" src="asteroids.js?v=3"></script>
 </body>
 </html>
