@@ -45,3 +45,10 @@ resource "google_storage_bucket_object" "asteroids_wasm" {
   source       = "asteroids/asteroids.wasm"
   content_type = "application/wasm"
 }
+
+resource "google_storage_bucket_object" "asteroids_data" {
+  name         = "asteroids/asteroids.data"
+  bucket       = google_storage_bucket.website.name
+  source       = "asteroids/asteroids.data"
+  content_type = "application/octet-stream"
+}
