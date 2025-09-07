@@ -52,3 +52,11 @@ resource "google_storage_bucket_object" "asteroids_data" {
   source       = "asteroids/asteroids.data"
   content_type = "application/octet-stream"
 }
+
+# Assets directory files (at root level as expected by the game)
+resource "google_storage_bucket_object" "assets_readme" {
+  name         = "assets/README.md"
+  bucket       = google_storage_bucket.website.name
+  source       = "assets/README.md"
+  content_type = "text/markdown"
+}
