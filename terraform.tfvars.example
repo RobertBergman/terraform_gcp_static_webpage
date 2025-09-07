@@ -1,0 +1,14 @@
+# Example Terraform variables file
+# Copy this file to terraform.tfvars and fill in your values
+
+# Required: Your Google Cloud billing account ID
+# You can find this in the Google Cloud Console under Billing
+billing_account = "XXXXXX-XXXXXX-XXXXXX"
+
+# Optional: Organization ID (leave empty if not using an organization)
+# Format: "123456789012"
+organization_id = ""
+
+# Optional: Folder ID (leave empty if not using folders)
+# Format: "123456789012"
+folder_id = ""
