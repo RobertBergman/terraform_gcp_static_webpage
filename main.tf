@@ -29,21 +29,7 @@ resource "google_storage_bucket_iam_member" "public_access" {
   member = "allUsers"
 }
 
-# Upload index.html
-resource "google_storage_bucket_object" "index" {
-  name         = "index.html"
-  bucket       = google_storage_bucket.website.name
-  source       = "index.html"
-  content_type = "text/html"
-}
-
-# Upload 404.html
-resource "google_storage_bucket_object" "not_found" {
-  name         = "404.html"
-  bucket       = google_storage_bucket.website.name
-  source       = "404.html"
-  content_type = "text/html"
-}
+# Website files are defined in website-files.tf
 
 # Reserve external IP address
 resource "google_compute_global_address" "website_ip" {
