@@ -2,10 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 
-export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions);
+interface SessionWithUser {
+  user?: {
+    email?: string | null;
+    name?: string | null;
+  };
+}
 
-  if (!session) {
+export async function POST(request: NextRequest) {
+  const session = await getServerSession(authOptions) as SessionWithUser | null;
+
+  if (!session || !session.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -25,7 +32,7 @@ export async function POST(request: NextRequest) {
     const mealPlan = {
       id: `plan_${Date.now()}`,
       receiptId,
-      userId: session.user?.email,
+      userId: session.user.email || '',
       createdAt: new Date().toISOString(),
       meals: [
         {

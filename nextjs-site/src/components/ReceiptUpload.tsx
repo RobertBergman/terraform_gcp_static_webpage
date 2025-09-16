@@ -79,6 +79,7 @@ export default function ReceiptUpload({ onUpload, isLoading = false }: ReceiptUp
                 <p className="text-sm text-gray-600">PDF receipt uploaded successfully</p>
               </div>
             ) : (
+              // eslint-disable-next-line @next/next/no-img-element
               <img src={preview} alt="Receipt preview" className="max-h-64 rounded" />
             )}
           </div>

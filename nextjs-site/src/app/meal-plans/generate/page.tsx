@@ -2,15 +2,26 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function GenerateMealPlan() {
+function GenerateMealPlanContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const receiptId = searchParams.get('receiptId');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [mealPlan, setMealPlan] = useState<any>(null);
+  const [mealPlan, setMealPlan] = useState<{
+    id: string;
+    receiptId: string;
+    userId: string;
+    createdAt: string;
+    meals: Array<{
+      day: string;
+      breakfast: string;
+      lunch: string;
+      dinner: string;
+    }>;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,6 +35,7 @@ export default function GenerateMealPlan() {
     if (receiptId && !mealPlan && !isGenerating) {
       generateMealPlan();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receiptId]);
 
   const generateMealPlan = async () => {
@@ -137,4 +149,16 @@ export default function GenerateMealPlan() {
   }
 
   return null;
+}
+
+export default function GenerateMealPlan() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    }>
+      <GenerateMealPlanContent />
+    </Suspense>
+  );
 }
