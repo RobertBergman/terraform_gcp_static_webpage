@@ -75,31 +75,31 @@ resource "google_certificate_manager_certificate_map_entry" "website_cert_entry_
   certificates = [google_certificate_manager_certificate.website_cert.id]
 }
 
-# Backend bucket
-resource "google_compute_backend_bucket" "website_backend" {
-  name        = "website-backend"
-  project     = google_project.web_page.project_id
-  bucket_name = google_storage_bucket.website.name
-  enable_cdn  = true
-  
-  cdn_policy {
-    cache_mode        = "CACHE_ALL_STATIC"
-    client_ttl        = 3600
-    default_ttl       = 3600
-    max_ttl           = 86400
-    negative_caching  = true
-    serve_while_stale = 86400
-  }
-  
-  depends_on = [google_project_service.apis]
-}
+# Backend bucket - DISABLED: Now using App Engine backend
+# resource "google_compute_backend_bucket" "website_backend" {
+#   name        = "website-backend"
+#   project     = google_project.web_page.project_id
+#   bucket_name = google_storage_bucket.website.name
+#   enable_cdn  = true
+#   
+#   cdn_policy {
+#     cache_mode        = "CACHE_ALL_STATIC"
+#     client_ttl        = 3600
+#     default_ttl       = 3600
+#     max_ttl           = 86400
+#     negative_caching  = true
+#     serve_while_stale = 86400
+#   }
+#   
+#   depends_on = [google_project_service.apis]
+# }
 
 # URL map
 resource "google_compute_url_map" "website" {
   name            = "website-url-map"
   project         = google_project.web_page.project_id
-  default_service = google_compute_backend_bucket.website_backend.id
-  depends_on      = [google_project_service.apis]
+  default_service = google_compute_backend_service.app_engine_backend.id
+  depends_on      = [google_project_service.apis, google_compute_backend_service.app_engine_backend]
 }
 
 # HTTPS target proxy

@@ -1,11 +1,13 @@
 # Website Files Upload Configuration
 
-# Main index page (menu)
+# Main index page (menu) - generated from template with OAuth client ID
 resource "google_storage_bucket_object" "index" {
   name         = "index.html"
   bucket       = google_storage_bucket.website.name
-  source       = "index.html"
+  source       = local_file.index_html.filename
   content_type = "text/html"
+  
+  depends_on = [local_file.index_html]
 }
 
 # 404 error page

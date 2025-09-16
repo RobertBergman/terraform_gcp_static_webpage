@@ -3,11 +3,23 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 5.0"
+      version = "~> 7.0"
     }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.0"
     }
   }
 }
@@ -69,7 +81,10 @@ resource "google_project_service" "apis" {
     "dns.googleapis.com",
     "certificatemanager.googleapis.com",
     "iam.googleapis.com",
-    "serviceusage.googleapis.com"
+    "serviceusage.googleapis.com",
+    "iap.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "appengine.googleapis.com"
   ])
   
   project            = google_project.web_page.project_id

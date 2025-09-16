@@ -1,0 +1,30 @@
+runtime: nodejs20
+instance_class: F2
+
+env_variables:
+  GOOGLE_CLIENT_ID: "YOUR_GOOGLE_CLIENT_ID_HERE"
+  GOOGLE_CLIENT_SECRET: "YOUR_GOOGLE_CLIENT_SECRET_HERE"
+  NEXTAUTH_SECRET: "YOUR_NEXTAUTH_SECRET_HERE"
+  NEXTAUTH_URL: "https://your-domain.com"
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: "YOUR_GA_MEASUREMENT_ID"
+  NODE_ENV: "production"
+  # Cloud SQL connection via Unix socket (if using Cloud SQL)
+  DATABASE_URL: "postgresql://username:password@localhost/database_name?host=/cloudsql/project:region:instance"
+
+# Cloud SQL configuration (if using Cloud SQL)
+beta_settings:
+  cloud_sql_instances: "project:region:instance"
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 2
+  min_idle_instances: 0
+  max_idle_instances: 1
+  min_pending_latency: 3000ms
+  max_pending_latency: 7000ms
+  max_concurrent_requests: 50
+
+handlers:
+  - url: /.*
+    script: auto
+    secure: always

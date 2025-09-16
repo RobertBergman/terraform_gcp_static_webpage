@@ -33,4 +33,7 @@ crash.*.log
 
 # Temporary files
 *.tmp
-.env
+.envclient_id.txt
+
+# Files with secrets
+app-engine.tf.old
