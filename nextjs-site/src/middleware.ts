@@ -6,8 +6,8 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   const { pathname } = request.nextUrl;
 
-  // Protected routes
-  const protectedPaths = ['/dashboard', '/profile', '/meal-plans'];
+  // Protected routes - only profile requires auth
+  const protectedPaths = ['/profile'];
   const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path));
 
   if (isProtectedPath && !token) {
@@ -19,5 +19,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/profile/:path*', '/meal-plans/:path*']
+  matcher: ['/profile/:path*']
 };

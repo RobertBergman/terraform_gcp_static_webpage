@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import ReceiptUpload from '@/components/ReceiptUpload';
 
@@ -12,12 +12,13 @@ export default function Dashboard() {
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('upload');
 
-  useEffect(() => {
-    if (status === 'loading') return;
-    if (!session) {
-      router.push('/auth/signin');
-    }
-  }, [session, status, router]);
+  // Auth is optional - users can use the app without signing in
+  // useEffect(() => {
+  //   if (status === 'loading') return;
+  //   if (!session) {
+  //     router.push('/auth/signin');
+  //   }
+  // }, [session, status, router]);
 
   const handleReceiptUpload = async (file: File) => {
     setIsUploading(true);
@@ -47,16 +48,13 @@ export default function Dashboard() {
     }
   };
 
+  // Show loading state only initially
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
-  }
-
-  if (!session) {
-    return null;
   }
 
   return (
@@ -102,21 +100,40 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-4">
-                Welcome, {session.user?.name || session.user?.email}
-              </span>
-              <Link
-                href="/"
-                className="text-sm text-gray-500 hover:text-gray-700 mr-4"
-              >
-                Home
-              </Link>
-              <button
-                onClick={() => router.push('/api/auth/signout')}
-                className="text-sm text-gray-500 hover:text-gray-700"
-              >
-                Sign out
-              </button>
+              {session ? (
+                <>
+                  <span className="text-sm text-gray-700 mr-4">
+                    Welcome, {session.user?.name || session.user?.email}
+                  </span>
+                  <Link
+                    href="/"
+                    className="text-sm text-gray-500 hover:text-gray-700 mr-4"
+                  >
+                    Home
+                  </Link>
+                  <button
+                    onClick={() => router.push('/api/auth/signout')}
+                    className="text-sm text-gray-500 hover:text-gray-700"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/"
+                    className="text-sm text-gray-500 hover:text-gray-700 mr-4"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/auth/signin"
+                    className="text-sm text-indigo-600 hover:text-indigo-500 font-medium"
+                  >
+                    Sign in
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
