@@ -3,13 +3,19 @@ import Header from '@/components/organisms/Header';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 flex justify-center items-center p-8 relative z-10">
-        {children}
+      <main className="relative z-10 flex flex-1 flex-col">
+        <div className="container mx-auto flex-1 px-6 py-12">
+          {children}
+        </div>
       </main>
-      <footer className="text-center p-4 text-white/60 bg-gray-900/30 relative z-1000">
-        <p>&copy; 2025 FatesBlind. All rights reserved.</p>
+      <footer className="relative z-10 border-t border-white/5 bg-gray-950/50 py-6">
+        <div className="container mx-auto px-6">
+          <p className="text-center text-sm text-gray-500">
+            &copy; 2025 FatesBlind. All rights reserved.
+          </p>
+        </div>
       </footer>
     </div>
   );

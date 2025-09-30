@@ -5,13 +5,20 @@ import UserInfo from '@/components/molecules/UserInfo';
 
 const Header = () => {
   return (
-    <header className="relative z-1000 bg-gray-900/50 backdrop-blur-lg p-4 flex justify-between items-center border-b border-white/10">
-      <Link href="/" className="font-orbitron text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-        FATESBLIND
-      </Link>
-      <div className="flex items-center gap-4">
-        <LoginButton />
-        <UserInfo />
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-gray-950/80 backdrop-blur-xl supports-[backdrop-filter]:bg-gray-950/60">
+      <div className="container mx-auto flex h-16 items-center justify-between px-6">
+        <Link
+          href="/"
+          className="flex items-center space-x-2 transition-opacity hover:opacity-80"
+        >
+          <span className="font-orbitron text-xl font-bold tracking-tight text-white">
+            FATESBLIND
+          </span>
+        </Link>
+        <div className="flex items-center gap-6">
+          <LoginButton />
+          <UserInfo />
+        </div>
       </div>
     </header>
   );
