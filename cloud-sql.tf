@@ -41,7 +41,7 @@ resource "google_sql_database_instance" "recipe_generator_db" {
     ip_configuration {
       ipv4_enabled    = true
       private_network = null
-      require_ssl     = false # Set to true in production
+      # Note: require_ssl is deprecated, use ssl_mode instead if needed
 
       # Allow App Engine and your local IP to connect
       authorized_networks {

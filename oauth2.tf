@@ -45,11 +45,12 @@ output "oauth_client_secret" {
 }
 
 # Generate index.html from template with OAuth client ID
-resource "local_file" "index_html" {
-  content = templatefile("${path.module}/index.html.tpl", {
-    oauth_client_id = google_iap_client.web_client.client_id
-  })
-  filename = "${path.module}/index.html"
-  
-  depends_on = [google_iap_client.web_client]
-}
+# DISABLED: Using Next.js app instead of static HTML
+# resource "local_file" "index_html" {
+#   content = templatefile("${path.module}/index.html.tpl", {
+#     oauth_client_id = google_iap_client.web_client.client_id
+#   })
+#   filename = "${path.module}/index.html"
+#
+#   depends_on = [google_iap_client.web_client]
+# }
