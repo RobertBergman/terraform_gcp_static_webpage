@@ -3,7 +3,7 @@ import { Orbitron, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import MainLayout from "@/components/templates/MainLayout";
-import SessionProvider from "@/components/providers/SessionProvider";
+import Provider from "@/components/providers/SessionProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import GAPathTracker from "@/components/GAPathTracker";
 
@@ -33,19 +33,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="google-adsense-account" content="ca-pub-7291878673566057" />
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7291878673566057"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
       </head>
       <body className={`${inter.variable} ${orbitron.variable} font-sans antialiased`}>
         <GoogleAnalytics />
         <GAPathTracker />
-        <SessionProvider>
+        <Provider>
           <MainLayout>{children}</MainLayout>
-        </SessionProvider>
+        </Provider>
       </body>
     </html>
   );

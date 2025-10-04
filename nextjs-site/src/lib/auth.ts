@@ -1,12 +1,7 @@
 import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const authOptions: any = {
-  adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
   },

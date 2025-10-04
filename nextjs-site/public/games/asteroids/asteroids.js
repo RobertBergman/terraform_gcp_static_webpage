@@ -7890,8 +7890,8 @@ async function createWasm() {
           0x00033003:0, // GLFW_STICKY_MOUSE_BUTTONS
         };
         this.buttons = 0;
-        this.keys = new Array();
-        this.domKeys = new Array();
+        this.keys = [];
+        this.domKeys = [];
         this.shouldClose = 0;
         this.title = null;
         this.windowPosFunc = 0; // GLFWwindowposfun
@@ -9004,7 +9004,7 @@ async function createWasm() {
   
       GLFW.initialTime = GLFW.getTime();
       GLFW.defaultWindowHints();
-      GLFW.windows = new Array()
+      GLFW.windows = []
       GLFW.active = null;
       GLFW.scale  = GLFW.getDevicePixelRatio();
   

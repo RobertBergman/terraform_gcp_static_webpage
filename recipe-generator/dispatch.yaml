@@ -1,0 +1,7 @@
+dispatch:
+  # Route /meal-planner to the recipe generator service
+  - url: "*/meal-planner/*"
+    service: default
+
+  - url: "*/meal-planner"
+    service: default
