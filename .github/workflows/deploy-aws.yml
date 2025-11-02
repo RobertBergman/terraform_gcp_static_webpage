@@ -1,0 +1,117 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: nextjs-site/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./nextjs-site
+        run: npm ci
+
+      - name: Build Next.js application
+        working-directory: ./nextjs-site
+        run: npm run build
+
+      - name: Create deployment package
+        run: |
+          cd nextjs-site
+          tar -czf ../nextjs-app.tar.gz \
+            --exclude='node_modules' \
+            --exclude='.next/cache' \
+            --exclude='.git' \
+            --exclude='*.log' \
+            .
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ubuntu
+        run: |
+          # Copy deployment package
+          scp -i ~/.ssh/deploy_key nextjs-app.tar.gz $EC2_USER@$EC2_HOST:/tmp/
+
+          # Deploy on server
+          ssh -i ~/.ssh/deploy_key $EC2_USER@$EC2_HOST << 'ENDSSH'
+            set -e
+
+            # Extract to app directory
+            cd /var/www/app
+            tar -xzf /tmp/nextjs-app.tar.gz
+            rm /tmp/nextjs-app.tar.gz
+
+            # Install production dependencies
+            npm ci --production
+
+            # Run database migrations
+            npx prisma migrate deploy
+            npx prisma generate
+
+            # Restart application with zero downtime
+            pm2 reload nextjs-app || pm2 start npm --name "nextjs-app" -- start
+            pm2 save
+
+            # Verify deployment
+            sleep 5
+            pm2 status
+
+            echo "✅ Deployment successful!"
+          ENDSSH
+
+      - name: Verify deployment
+        env:
+          DOMAIN: ${{ secrets.DOMAIN || 'fatesblind.com' }}
+        run: |
+          # Wait for app to be ready
+          sleep 10
+
+          # Check if site is responding
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://$DOMAIN)
+
+          if [ $response -eq 200 ] || [ $response -eq 301 ] || [ $response -eq 302 ]; then
+            echo "✅ Site is responding correctly (HTTP $response)"
+          else
+            echo "❌ Site returned unexpected status: $response"
+            exit 1
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f ~/.ssh/deploy_key
+          rm -f nextjs-app.tar.gz
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed! Check the logs above."
+          # Add Slack/Discord webhook notification here if needed

@@ -1,0 +1,76 @@
+╔═══════════════════════════════════════════════════════════════╗
+║          GCE DEPLOYMENT - QUICK REFERENCE CARD                ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                                ║
+║  DEPLOY APPLICATION                                            ║
+║  cd gce-migration/scripts && ./deploy-to-vm.sh                ║
+║                                                                ║
+║  CHECK INFRASTRUCTURE STATUS                                   ║
+║  cd gce-migration/scripts && ./check-status.sh                ║
+║                                                                ║
+║  EMERGENCY RESTORE (spot instance terminated)                 ║
+║  cd gce-migration/scripts && ./emergency-restore.sh           ║
+║                                                                ║
+║  CHECK APP STATUS                                              ║
+║  gcloud compute ssh nextjs-vm --zone=us-central1-a \          ║
+║    --command="pm2 status"                                     ║
+║                                                                ║
+║  VIEW LOGS                                                     ║
+║  gcloud compute ssh nextjs-vm --zone=us-central1-a \          ║
+║    --command="pm2 logs"                                       ║
+║                                                                ║
+║  RESTART APP                                                   ║
+║  gcloud compute ssh nextjs-vm --zone=us-central1-a \          ║
+║    --command="pm2 restart nextjs-app"                         ║
+║                                                                ║
+║  CHECK HEALTH                                                  ║
+║  gcloud compute backend-services get-health \                 ║
+║    nextjs-backend --global                                    ║
+║                                                                ║
+║  SSH TO VM                                                     ║
+║  gcloud compute ssh nextjs-vm --zone=us-central1-a            ║
+║                                                                ║
+║  TEST SITE                                                     ║
+║  curl -I https://fatesblind.com                               ║
+║                                                                ║
+╠═══════════════════════════════════════════════════════════════╣
+║  URLS                                                          ║
+║  Production: https://fatesblind.com                           ║
+║  Load Balancer IP: 34.160.77.21                               ║
+║  VM IP: 34.10.126.17                                          ║
+╠═══════════════════════════════════════════════════════════════╣
+║  FILES                                                         ║
+║  App Directory: /var/www/app                                  ║
+║  Environment: /var/www/app/.env                               ║
+║  PM2 Config: ~/.pm2/                                          ║
+║  nginx Config: /etc/nginx/sites-available/nextjs             ║
+╠═══════════════════════════════════════════════════════════════╣
+║  TROUBLESHOOTING                                               ║
+║                                                                ║
+║  App not responding:                                           ║
+║    pm2 logs --lines 100                                       ║
+║    pm2 restart nextjs-app                                     ║
+║                                                                ║
+║  Database issues:                                              ║
+║    sudo systemctl status cloud-sql-proxy                      ║
+║    sudo systemctl restart cloud-sql-proxy                     ║
+║                                                                ║
+║  nginx issues:                                                 ║
+║    sudo systemctl status nginx                                ║
+║    sudo nginx -t                                              ║
+║    sudo systemctl restart nginx                               ║
+║                                                                ║
+╠═══════════════════════════════════════════════════════════════╣
+║  COSTS (Monthly)                                               ║
+║  e2-micro: FREE (744hrs) or $2/mo (spot)                      ║
+║  Cloud SQL: $15-20/mo                                         ║
+║  Load Balancer: $18/mo                                        ║
+║  Total: ~$33-38/mo                                            ║
+╠═══════════════════════════════════════════════════════════════╣
+║  BACKUP & FAILOVER                                             ║
+║  App Engine: Maintained as zero-cost emergency fallback       ║
+║  Failover docs: See FAILOVER.md for emergency procedures      ║
+║  Direct URL: https://web-page-d9ec622e.uc.r.appspot.com       ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Print this and keep it handy!

@@ -1,0 +1,19 @@
+# GCP Project Configuration
+project_id = "web-page-d9ec622e"  # Your existing project ID
+
+# Region and Zone
+region = "us-central1"
+zone   = "us-central1-a"
+
+# Instance Configuration
+machine_type       = "e2-micro"  # Free tier eligible (744 hours/month free)
+use_spot_instance  = true        # Use spot instance for extra cost savings
+
+# Domain
+domain_name = "fatesblind.com"
+
+# OAuth Configuration
+# Copy actual values from credentials.env or app.yaml
+google_client_id     = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+google_client_secret = "YOUR_GOOGLE_CLIENT_SECRET"
+nextauth_secret      = "YOUR_NEXTAUTH_SECRET"

@@ -47,7 +47,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
           <MenuCard
-            href="/meal-planner"
+            href="https://easyeatsplan.com"
             icon="🍽️"
             title="Meal Planner"
             description="Generate personalized meal plans based on your preferences and local store sales. AI-powered recipe recommendations."

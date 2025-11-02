@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Orbitron, Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import MainLayout from "@/components/templates/MainLayout";
 import Provider from "@/components/providers/SessionProvider";
