@@ -1,0 +1,7 @@
+creationTimestamp: '2025-09-07T13:34:43.651-07:00'
+defaultService: https://www.googleapis.com/compute/v1/projects/web-page-d9ec622e/global/backendServices/firebase-backend
+fingerprint: 9X9Q5HtNZNc=
+id: 3201490830473843340
+kind: compute#urlMap
+name: website-url-map
+selfLink: https://www.googleapis.com/compute/v1/projects/web-page-d9ec622e/global/urlMaps/website-url-map

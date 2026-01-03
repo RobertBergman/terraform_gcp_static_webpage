@@ -98,8 +98,8 @@ resource "google_certificate_manager_certificate_map_entry" "website_cert_entry_
 resource "google_compute_url_map" "website" {
   name            = "website-url-map"
   project         = google_project.web_page.project_id
-  default_service = google_compute_backend_service.app_engine_backend.id
-  depends_on      = [google_project_service.apis, google_compute_backend_service.app_engine_backend]
+  default_service = google_compute_backend_service.firebase_backend.id
+  depends_on      = [google_project_service.apis, google_compute_backend_service.firebase_backend]
 }
 
 # HTTPS target proxy
