@@ -26,6 +26,9 @@ key.json
 *.swo
 *~
 
+# Windows Zone.Identifier metadata files
+*:Zone.Identifier
+
 # Logs
 *.log
 crash.log
